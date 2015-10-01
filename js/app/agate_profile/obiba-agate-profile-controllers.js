@@ -121,7 +121,9 @@
               $scope.form = AgateProfileForm.form;
               $scope.schema = AgateProfileForm.schema;
               $scope.response = null;
-              $scope.schema.properties.username.readonly = true;
+              if ($scope.schema.properties.username) {
+                $scope.schema.properties.username.readonly = true;
+              }
               AgateUserProfile.get(function onSuccess(userProfile) {
                 userProfile.userProfile.username = Drupal.settings.agateParam.userId;
                 $scope.model = userProfile.userProfile;
@@ -133,7 +135,7 @@
                 if (form.$valid) {
                   AgateUserProfile.save($scope.model, function (response) {
                     response.locationRedirection = response.locationRedirection ? response.locationRedirection : 'view';
-                    if (response && !response.errorServer) {
+                    if (response && ! response.errorServer) {
                       AlertService.alert({
                         id: 'MainController',
                         type: 'success',
